@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { 
   User, Mail, Lock, 
   LogIn, Shield 
@@ -93,25 +94,9 @@ export default function HealthcareAuthModal() {
             </div>
           )}
 
-          <button 
-            type="submit" 
-            className="w-full py-3 bg-gradient-to-r from-cyan-600 to-teal-500 text-white rounded-lg hover:opacity-90 transition-all flex items-center justify-center"
-          >
-            {isLogin ? 'Se connecter' : "S'inscrire"}
-            <LogIn className="ml-2" size={20} />
-          </button>
-
-          <div className="text-center mt-4">
-            <button 
-              type="button"
-              onClick={() => setIsLogin(!isLogin)}
-              className="text-cyan-700 hover:underline"
-            >
-              {isLogin 
-                ? 'Pas de compte ? Inscrivez-vous' 
-                : 'Déjà un compte ? Connectez-vous'}
-            </button>
-          </div>
+<p className="text-center">
+                        Vous avez Déja un compte? <a href="/register">inscrivez-vous</a>
+                    </p>
         </form>
       </div>
     </div>

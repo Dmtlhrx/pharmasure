@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+
 import {
   Calendar,
   Users,
@@ -200,6 +202,11 @@ const DoctorDashboard = () => {
             <p className="text-sm"><Phone className="inline mr-1 text-green-600" size={16}/>{patient.telephone}</p>
             <p className="text-sm"><Mail className="inline mr-1 text-green-600" size={16}/>{patient.email}</p>
           </div>
+          <Link to="/PrescriptionApp" className="w-full md:w-auto">
+        <button className="w-full bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700 flex items-center justify-center">
+          <Home className="mr-2" />
+       Prescrit médicaments
+        </button> </Link>
         </div>
       </div>
     ))}
