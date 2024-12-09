@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { 
-  Calendar, 
-  Users, 
-  CheckCircle, 
-  Clock, 
-  Plus, 
+import {
+  Calendar,
+  Users,
+  CheckCircle,
+  Clock,
+  Plus,
   Edit,
   Trash2,
   Home,
@@ -15,25 +15,67 @@ import {
   Mail
 } from 'lucide-react';
 
+const menuItems = [
+  {
+    name: 'Tableau de Bord',
+    icon: <Home size={24} />,
+    section: 'dashboard'
+  },
+  {
+    name: 'Disponibilités',
+    icon: <Calendar size={24} />,
+    section: 'disponibilites'
+  },
+  {
+    name: 'Patients',
+    icon: <Users size={24} />,
+    section: 'patients'
+  },
+  {
+    name: 'Rendez-vous',
+    icon: <Clock size={24} />,
+    section: 'rendezvous'
+  },
+  {
+    name: 'Paramètres',
+    icon: <Settings size={24} />,
+    section: 'settings'
+  }
+];
+
 const mockPatients = [
-  { id: 1, nom: 'Jean Dupont', age: 45, derniereVisite: '2024-01-15', telephone: '0601020304', email: 'jean.dupont@email.com' },
-  { id: 2, nom: 'Marie Martin', age: 32, derniereVisite: '2024-02-20', telephone: '0612345678', email: 'marie.martin@email.com' }
+  {
+    id: 1,
+    nom: 'Jean Dupont',
+    age: 45,
+    derniereVisite: '2024-01-15',
+    telephone: '0601020304',
+    email: 'jean.dupont@email.com'
+  },
+  {
+    id: 2,
+    nom: 'Marie Martin',
+    age: 32,
+    derniereVisite: '2024-02-20',
+    telephone: '0612345678',
+    email: 'marie.martin@email.com'
+  }
 ];
 
 const mockRendezvous = [
-  { 
-    id: 1, 
-    patient: 'Jean Dupont', 
-    date: '2024-06-15', 
-    heure: '10:00', 
+  {
+    id: 1,
+    patient: 'Jean Dupont',
+    date: '2024-06-15',
+    heure: '10:00',
     statut: 'en attente',
     motif: 'Consultation générale'
   },
-  { 
-    id: 2, 
-    patient: 'Marie Martin', 
-    date: '2024-06-16', 
-    heure: '14:30', 
+  {
+    id: 2,
+    patient: 'Marie Martin',
+    date: '2024-06-16',
+    heure: '14:30',
     statut: 'confirmé',
     motif: 'Suivi médical'
   }
@@ -48,13 +90,18 @@ const DoctorDashboard = () => {
     { jour: 'Mercredi', heures: ['11:00', '15:30'] }
   ]);
   const [selectedRendezvous, setSelectedRendezvous] = useState(null);
-  const [nouvelleDisponibilite, setNouvelleDisponibilite] = useState({ jour: '', heures: '' });
+  const [nouvelleDisponibilite, setNouvelleDisponibilite] = useState({
+    jour: '',
+    heures: ''
+  });
 
   const ajouterDisponibilite = () => {
     if (nouvelleDisponibilite.jour && nouvelleDisponibilite.heures) {
-      const heuresArray = nouvelleDisponibilite.heures.split(',').map(h => h.trim());
+      const heuresArray = nouvelleDisponibilite.heures
+        .split(',')
+        .map((h) => h.trim());
       setDisponibilites([
-        ...disponibilites, 
+        ...disponibilites,
         { jour: nouvelleDisponibilite.jour, heures: heuresArray }
       ]);
       setNouvelleDisponibilite({ jour: '', heures: '' });
@@ -68,12 +115,12 @@ const DoctorDashboard = () => {
   };
 
   const gererRendezvous = (id, action, nouvelleDate = null) => {
-    const updatedRendezvous = rendezvous.map(rv => 
-      rv.id === id 
-        ? { 
-            ...rv, 
+    const updatedRendezvous = rendezvous.map((rv) =>
+      rv.id === id
+        ? {
+            ...rv,
             statut: action,
-            ...(nouvelleDate && { date: nouvelleDate }) 
+            ...(nouvelleDate && { date: nouvelleDate })
           }
         : rv
     );
@@ -133,73 +180,26 @@ const DoctorDashboard = () => {
 
   const renderPatients = () => (
     <div className="bg-white rounded-lg shadow-md p-4">
-      <h2 className="text-xl font-bold mb-4 flex items-center text-green-600">
-        <Users className="mr-2"/> Mes Patients
-      </h2>
-      {patients.map((patient) => (
-        <div key={patient.id} className="mb-3 p-2 bg-green-50 rounded">
-          <div className="flex justify-between">
-            <div>
-              <p className="font-semibold">{patient.nom}</p>
-              <p className="text-sm text-gray-600">Âge : {patient.age}</p>
-              <p className="text-sm text-gray-600">Dernière visite : {patient.derniereVisite}</p>
-            </div>
-            <div className="text-right">
-              <p className="text-sm"><Phone className="inline mr-1 text-green-600" size={16}/>{patient.telephone}</p>
-              <p className="text-sm"><Mail className="inline mr-1 text-green-600" size={16}/>{patient.email}</p>
-            </div>
+    <h2 className="text-xl font-bold mb-4 flex items-center text-green-600">
+      <Users className="mr-2"/> Mes Patients
+    </h2>
+    {patients.map((patient) => (
+      <div key={patient.id} className="mb-3 p-2 bg-green-50 rounded">
+        <div className="flex justify-between">
+          <div>
+            <p className="font-semibold">{patient.nom}</p>
+            <p className="text-sm text-gray-600">Âge : {patient.age}</p>
+            <p className="text-sm text-gray-600">Dernière visite : {patient.derniereVisite}</p>
           </div>
-        </div>
-      ))}
-    </div>
-  );
-
-  const renderGestionRendezvous = (rv) => {
-    return (
-      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-        <div className="bg-white p-6 rounded-lg shadow-xl w-96">
-          <h2 className="text-xl font-bold mb-4 text-green-600">Gestion Rendez-vous</h2>
-          <div className="mb-4">
-            <p><strong>Patient:</strong> {rv.patient}</p>
-            <p><strong>Date:</strong> {rv.date}</p>
-            <p><strong>Heure:</strong> {rv.heure}</p>
-            <p><strong>Motif:</strong> {rv.motif}</p>
+          <div className="text-right">
+            <p className="text-sm"><Phone className="inline mr-1 text-green-600" size={16}/>{patient.telephone}</p>
+            <p className="text-sm"><Mail className="inline mr-1 text-green-600" size={16}/>{patient.email}</p>
           </div>
-          <div className="flex space-x-3">
-            <button 
-              onClick={() => gererRendezvous(rv.id, 'confirmé')}
-              className="flex-1 bg-green-500 text-white p-2 rounded hover:bg-green-600"
-            >
-              <CheckCircle className="inline mr-2"/> Confirmer
-            </button>
-            <button 
-              onClick={() => {
-                const nouvelleDate = prompt('Entrez une nouvelle date (AAAA-MM-JJ)');
-                if (nouvelleDate) {
-                  gererRendezvous(rv.id, 'reporté', nouvelleDate);
-                }
-              }}
-              className="flex-1 bg-yellow-500 text-white p-2 rounded hover:bg-yellow-600"
-            >
-              <Clock className="inline mr-2"/> Reporter
-            </button>
-            <button 
-              onClick={() => gererRendezvous(rv.id, 'annulé')}
-              className="flex-1 bg-red-500 text-white p-2 rounded hover:bg-red-600"
-            >
-              <XCircle className="inline mr-2"/> Annuler
-            </button>
-          </div>
-          <button 
-            onClick={() => setSelectedRendezvous(null)}
-            className="mt-4 w-full bg-gray-200 p-2 rounded hover:bg-gray-300"
-          >
-            Fermer
-          </button>
         </div>
       </div>
-    );
-  };
+    ))}
+  </div>
+  );
 
   const renderListeRendezvous = () => (
     <div className="bg-white rounded-lg shadow-md p-4">
@@ -229,75 +229,82 @@ const DoctorDashboard = () => {
         </div>
       ))}
     </div>
+    
   );
 
   return (
     <div className="flex bg-green-50 min-h-screen">
-      {/* Sidebar */}
-      <div className="w-64 bg-green-700 text-white p-6">
-        <h1 className="text-2xl font-bold mb-10">Dr. Santé</h1>
-        <nav className="space-y-4">
+       {/* Sidebar */}
+    
+       <div className="hidden md:block w-64 h-screen bg-white shadow-lg fixed left-0 top-0">
+        <div className="p-5 text-center border-b">
+          <h2 className="text-2xl font-bold text-green-600">Dr. Santé</h2>
+        </div>
+        <nav className="mt-10">
+          {menuItems.map((item) => (
+            <button
+              key={item.section}
+              onClick={() => setActiveSection(item.section)}
+              className={`
+                flex items-center w-full p-3 
+                ${activeSection === item.section 
+                  ? 'bg-green-600 text-white' 
+                  : 'hover:bg-green-100 text-gray-700'}
+                transition-all duration-200
+              `}
+            >
+              {item.icon}
+              <span className="ml-3">{item.name}</span>
+            </button>
+          ))}
           <button 
-            onClick={() => setActiveSection('dashboard')}
-            className={`flex items-center w-full p-3 rounded ${activeSection === 'dashboard' ? 'bg-green-600' : 'hover:bg-green-600'}`}
+            className="flex items-center w-full p-3 mt-5 hover:bg-red-100 text-red-600"
           >
-            <Home className="mr-3"/> Tableau de Bord
-          </button>
-          <button 
-            onClick={() => setActiveSection('disponibilites')}
-            className={`flex items-center w-full p-3 rounded ${activeSection === 'disponibilites' ? 'bg-green-600' : 'hover:bg-green-600'}`}
-          >
-            <Calendar className="mr-3"/> Disponibilités
-          </button>
-          <button 
-            onClick={() => setActiveSection('patients')}
-            className={`flex items-center w-full p-3 rounded ${activeSection === 'patients' ? 'bg-green-600' : 'hover:bg-green-600'}`}
-          >
-            <Users className="mr-3"/> Patients
-          </button>
-          <button 
-            onClick={() => setActiveSection('rendezvous')}
-            className={`flex items-center w-full p-3 rounded ${activeSection === 'rendezvous' ? 'bg-green-600' : 'hover:bg-green-600'}`}
-          >
-            <CheckCircle className="mr-3"/> Rendez-vous
-          </button>
-          <button 
-            onClick={() => setActiveSection('settings')}
-            className={`flex items-center w-full p-3 rounded ${activeSection === 'settings' ? 'bg-green-600' : 'hover:bg-green-600'}`}
-          >
-            <Settings className="mr-3"/> Paramètres
-          </button>
-          <button 
-            className="flex items-center w-full p-3 rounded hover:bg-green-600 mt-10"
-          >
-            <LogOut className="mr-3"/> Déconnexion
+            <LogOut size={24} />
+            <span className="ml-3">Déconnexion</span>
           </button>
         </nav>
       </div>
 
-      {/* Main Content */}
-      <div className="flex-1 p-6">
-        <h1 className="text-3xl font-bold text-green-700 mb-6">
-          {activeSection === 'dashboard' && 'Tableau de Bord'}
-          {activeSection === 'disponibilites' && 'Mes Disponibilités'}
-          {activeSection === 'patients' && 'Mes Patients'}
-          {activeSection === 'rendezvous' && 'Gestion des Rendez-vous'}
-          {activeSection === 'settings' && 'Paramètres'}
-        </h1>
-        
-        {activeSection === 'dashboard' && (
-          <div className="grid grid-cols-2 gap-6">
-            {renderListeRendezvous()}
-            {renderDisponibilites()}
-          </div>
-        )}
-        
+      {/* Mobile Footer */}
+      <div className="fixed bottom-0 left-0 right-0 md:hidden z-50 bg-white border-t shadow-lg">
+        <div className="flex justify-around py-3">
+          {menuItems.map((item) => (
+            <button
+              key={item.section}
+              onClick={() => {
+                setActiveSection(item.section);
+                setIsMobileMenuOpen(false);
+              }}
+              className={`
+                flex flex-col items-center 
+                ${activeSection === item.section 
+                  ? 'text-green-600' 
+                  : 'text-gray-500'}
+                transform transition-all duration-300 
+                hover:scale-110 hover:text-green-700
+              `}
+            >
+              {item.icon}
+            </button>
+          ))}
+          <button 
+            onClick={() => {/* Logique de déconnexion */}}
+            className="flex flex-col items-center text-red-500 hover:text-red-700 transform transition-all duration-300 hover:scale-110"
+          >
+            <LogOut size={24} />
+          </button>
+        </div>
+      </div>
+
+      {/* Contenu principal */}
+      <main className="ml-0 md:ml-64 flex-1 p-6">
+        {activeSection === 'dashboard' && <h1>Bienvenue dans le tableau de bord</h1>}
         {activeSection === 'disponibilites' && renderDisponibilites()}
         {activeSection === 'patients' && renderPatients()}
         {activeSection === 'rendezvous' && renderListeRendezvous()}
-        
         {selectedRendezvous && renderGestionRendezvous(selectedRendezvous)}
-      </div>
+      </main>
     </div>
   );
 };

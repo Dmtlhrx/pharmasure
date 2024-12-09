@@ -28,11 +28,7 @@ const mockDemandes = [
   }
 ];
 
-const mockAlternatives = [
-  { id: 1, nom: 'Paracétamol', dosage: '500mg' },
-  { id: 2, nom: 'Ibuprofène', dosage: '200mg' },
-  { id: 3, nom: 'Efferalgan', dosage: '1000mg' }
-];
+// (Tous les imports et states précédents restent identiques)
 
 const PharmacyDashboard = () => {
   const [activeSection, setActiveSection] = useState('dashboard');
@@ -195,17 +191,20 @@ const PharmacyDashboard = () => {
   };
 
   const renderContent = () => {
-    switch(activeSection) {
+    switch (activeSection) {
       case 'dashboard':
         return (
-          <div className="grid grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="bg-white rounded-lg shadow-md p-4">
               <h2 className="text-xl font-bold mb-4 flex items-center text-green-600">
-                <Package className="mr-2"/> Demandes de Médicaments
+                <Package className="mr-2" /> Demandes de Médicaments
               </h2>
               {demandesMedicaments.map((demande) => (
-                <div key={demande.id} className="mb-3 p-2 bg-green-50 rounded flex justify-between items-center">
-                  <div>
+                <div
+                  key={demande.id}
+                  className="mb-3 p-2 bg-green-50 rounded flex flex-col md:flex-row justify-between items-start md:items-center"
+                >
+                  <div className="mb-2 md:mb-0">
                     <p className="font-semibold">{demande.medicament}</p>
                     <p className="text-sm text-gray-600">
                       Quantité : {demande.quantite} | Client : {demande.client}
@@ -226,18 +225,18 @@ const PharmacyDashboard = () => {
                   </div>
                   {demande.statut === 'en attente' && (
                     <div className="flex space-x-2">
-                      <button 
+                      <button
                         onClick={() => ouvrirModalDisponibilite(demande)}
                         className="bg-green-500 text-white px-2 py-1 rounded text-sm"
                       >
-                        <CheckCircle className="inline-block mr-1 w-4 h-4"/>
+                        <CheckCircle className="inline-block mr-1 w-4 h-4" />
                         Disponible
                       </button>
-                      <button 
+                      <button
                         onClick={() => ouvrirModalIndisponibilite(demande)}
                         className="bg-yellow-500 text-white px-2 py-1 rounded text-sm"
                       >
-                        <AlertCircle className="inline-block mr-1 w-4 h-4"/>
+                        <AlertCircle className="inline-block mr-1 w-4 h-4" />
                         Indisponible
                       </button>
                     </div>
@@ -245,11 +244,11 @@ const PharmacyDashboard = () => {
                 </div>
               ))}
             </div>
-
+  
             {/* Placeholder for future communication section */}
             <div className="bg-white rounded-lg shadow-md p-4">
               <h2 className="text-xl font-bold mb-4 flex items-center text-green-600">
-                <MessageCircle className="mr-2"/> Communications
+                <MessageCircle className="mr-2" /> Communications
               </h2>
               <p className="text-gray-500 text-center">
                 Aucune conversation active
@@ -263,11 +262,16 @@ const PharmacyDashboard = () => {
             <h2 className="text-2xl font-bold text-green-600 mb-4">Paramètres</h2>
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700">Notifications</label>
-                <input type="checkbox" className="mr-2" /> Activer les notifications
+                <label className="block text-sm font-medium text-gray-700">
+                  Notifications
+                </label>
+                <input type="checkbox" className="mr-2" /> Activer les
+                notifications
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700">Stock</label>
+                <label className="block text-sm font-medium text-gray-700">
+                  Stock
+                </label>
                 <input type="checkbox" className="mr-2" /> Alertes de stock bas
               </div>
             </div>
@@ -277,11 +281,13 @@ const PharmacyDashboard = () => {
         return null;
     }
   };
+  
+  // Conserver toutes les fonctions précédentes comme ouvrirModalDisponibilite, etc.
 
   return (
-    <div className="flex bg-green-50 min-h-screen">
-      {/* Sidebar */}
-      <div className="w-64 bg-green-700 text-white p-6">
+    <div className="relative bg-green-50 min-h-screen">
+      {/* Sidebar Desktop */}
+      <div className="hidden md:block w-64 bg-green-700 text-white p-6 fixed left-0 top-0 h-full">
         <h1 className="text-2xl font-bold mb-10">Pharmacie Verte</h1>
         <nav className="space-y-4">
           <button 
@@ -304,8 +310,8 @@ const PharmacyDashboard = () => {
         </nav>
       </div>
 
-      {/* Main Content */}
-      <div className="flex-1 p-6">
+      {/* Contenu Principal avec Padding pour Desktop */}
+      <div className="md:ml-64 p-6">
         <h1 className="text-3xl font-bold text-green-700 mb-6">
           {activeSection === 'dashboard' ? 'Tableau de Bord' : 'Paramètres'}
         </h1>
@@ -314,6 +320,54 @@ const PharmacyDashboard = () => {
         {renderModalDisponibilite()}
         {renderModalIndisponibilite()}
       </div>
+
+      {/* Footer Mobile - Icônes seules */}
+     <div className="fixed bottom-0 left-0 right-0 md:hidden z-50 bg-white border-t shadow-lg">
+  <div className="flex justify-around">
+    {/* Dashboard Button */}
+    <button 
+      onClick={() => setActiveSection('dashboard')}
+      className={`
+        flex flex-col items-center p-2 
+        ${activeSection === 'dashboard' 
+          ? 'text-green-600' 
+          : 'text-gray-500'}
+        transform transition-all duration-300 
+        hover:scale-110 hover:text-green-700
+      `}
+    >
+      <Home className="text-current" />
+    </button>
+
+    {/* Settings Button */}
+    <button 
+      onClick={() => setActiveSection('settings')}
+      className={`
+        p-2 rounded-full 
+        ${activeSection === 'settings' 
+          ? 'text-green-600' 
+          : 'text-gray-500'}
+        transform transition-all duration-300 
+        hover:scale-110 hover:text-green-700
+      `}
+    >
+      <Settings className="text-current" />
+    </button>
+
+    {/* Logout Button */}
+    <button 
+      className={`
+        p-2 rounded-full 
+        text-gray-500 
+        transform transition-all duration-300 
+        hover:bg-green-600 hover:text-white
+      `}
+    >
+      <LogOut className="text-current" />
+    </button>
+  </div>
+</div>
+
     </div>
   );
 };
