@@ -7,6 +7,8 @@ import Register from "./components/pages/register";
 import PharmacyDashboard from "./components/pages/PharmacyDashboard";
 import DoctorDashboard from "./components/pages/DoctorDashboard";
 import DashboardUser from "./components/pages/DashboardUser";
+import '../src/App.css';  // Assurez-vous que ce fichier contient les directives de Tailwind
+
 
 function App() {
   return (

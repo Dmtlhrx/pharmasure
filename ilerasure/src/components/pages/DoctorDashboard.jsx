@@ -15,6 +15,9 @@ import {
   Mail
 } from 'lucide-react';
 
+//const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+
 const menuItems = [
   {
     name: 'Tableau de Bord',
@@ -81,7 +84,9 @@ const mockRendezvous = [
   }
 ];
 
+
 const DoctorDashboard = () => {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('dashboard');
   const [rendezvous, setRendezvous] = useState(mockRendezvous);
   const [patients, setPatients] = useState(mockPatients);
@@ -200,6 +205,28 @@ const DoctorDashboard = () => {
     ))}
   </div>
   );
+
+  const renderGestionRendezvous = (rendezvous) => (
+    <div className="bg-white p-4 rounded shadow-md">
+      <h3 className="text-xl font-bold text-green-600 mb-3">Gérer le rendez-vous</h3>
+      <p>Patient : {rendezvous.patient}</p>
+      <p>Date : {rendezvous.date} à {rendezvous.heure}</p>
+      <p>Statut actuel : {rendezvous.statut}</p>
+      <button
+        onClick={() => gererRendezvous(rendezvous.id, 'confirmé')}
+        className="bg-green-500 text-white px-3 py-2 rounded mt-2"
+      >
+        Confirmer
+      </button>
+      <button
+        onClick={() => gererRendezvous(rendezvous.id, 'annulé')}
+        className="bg-red-500 text-white px-3 py-2 rounded mt-2 ml-2"
+      >
+        Annuler
+      </button>
+    </div>
+  );
+  
 
   const renderListeRendezvous = () => (
     <div className="bg-white rounded-lg shadow-md p-4">

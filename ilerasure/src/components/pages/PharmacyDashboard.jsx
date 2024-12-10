@@ -45,6 +45,9 @@ const PharmacyDashboard = () => {
     setPrix('');
   };
 
+  const mockAlternatives = ["Alternative1", "Alternative2"];
+
+
   const confirmerDisponibilite = () => {
     if (!prix || prix <= 0) {
       alert('Veuillez entrer un prix valide');
