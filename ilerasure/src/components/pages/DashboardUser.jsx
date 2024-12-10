@@ -61,7 +61,6 @@ const HealthcareDashboard = () => {
 
   const handleMedicamentSearch = (e) => {
     e.preventDefault();
-    // Implement actual search logic
     console.log('Medication Search Details:', medicamentForm);
     // TODO: Add API call or search functionality
   };
@@ -181,8 +180,7 @@ const HealthcareDashboard = () => {
                 )}
                 <button 
                   onClick={() => {
-                    // TODO: Implement booking or contact logic
-                    console.log(`${med.availability ? 'Booking' : 'Contacting'} ${med.pharmacy}`);
+                    console.log(`${med.availability ? 'Booking' : 'Contacter'} ${med.pharmacy}`);
                   }}
                   className={`mt-2 px-4 py-2 rounded-lg ${med.availability ? 'bg-teal-500 hover:bg-teal-600' : 'bg-red-500 hover:bg-red-600'} text-white w-full`}
                 >
@@ -203,109 +201,102 @@ const HealthcareDashboard = () => {
         <h2 className="text-2xl font-semibold text-teal-800">Réservation de Consultation</h2>
       </div>
 
-      <form onSubmit={handleAppointmentBooking} className="space-y-4">
-        <div>
-          <label className="block mb-2 text-teal-700">Sélectionner l'Hôpital</label>
-          <div className="space-y-2">
-            {hospitals.map((hospital) => (
-              <div 
-                key={hospital.id} 
-                className={`border-2 rounded-lg p-4 cursor-pointer transition duration-300 ${
-                  selectedHospital === hospital.name 
-                    ? 'border-cyan-500 bg-cyan-50' 
-                    : 'border-teal-200 hover:border-cyan-300'
-                }`}
-                onClick={() => setSelectedHospital(hospital.name)}
-              >
-                <div className="flex items-center space-x-3">
-                  <Hospital size={24} className="text-teal-600" />
-                  <div>
-                    <p className="font-semibold text-teal-800">{hospital.name}</p>
-                    <p className="text-sm text-teal-600 flex items-center space-x-1">
-                      <MapPin size={16} />
-                      <span>{hospital.address}</span>
-                    </p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div>
-          <label className="block mb-2 text-teal-700">Date de Consultation</label>
-          <input
-            type="date"
-            value={appointmentDate}
-            onChange={(e) => setAppointmentDate(e.target.value)}
-            className="w-full px-4 py-3 border-2 border-teal-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-300 text-teal-800"
-          />
-        </div>
-
-        <button 
-          type="submit" 
-          className="w-full bg-teal-500 text-white py-3 rounded-lg hover:bg-teal-600 transition duration-300 flex items-center justify-center space-x-2"
-        >
-          <CalendarCheck size={20} />
-          <span>Confirmer la Réservation</span>
-        </button>
-      </form>
-    </div>
-  );
-
-  const renderSidebar = () => (
-    <div 
-      className={`fixed top-0 left-0 h-full w-64 bg-teal-700 text-white transition-transform duration-300 ${
-        sidebarOpen ? 'translate-x-0' : '-translate-x-full'
-      } z-50 shadow-xl`}
+<form onSubmit={handleAppointmentBooking} className="space-y-4">
+<div className="grid md:grid-cols-2 gap-4">
+  <div>
+    <label htmlFor="hospitalSelect" className="block text-teal-700 mb-2">Choisissez un Hôpital</label>
+    <select
+      id="hospitalSelect"
+      value={selectedHospital}
+      onChange={(e) => setSelectedHospital(e.target.value)}
+      className="w-full px-4 py-3 border-2 border-teal-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-300 text-teal-800"
     >
-      <div className="p-6">
-        <h1 className="text-2xl font-bold mb-6">HealthCare</h1>
-        <nav className="space-y-4">
-          <button 
-            onClick={() => setActivePage('medicament')}
-            className={`w-full text-left p-3 rounded-lg flex items-center space-x-3 ${
-              activePage === 'medicament' ? 'bg-teal-600' : 'hover:bg-teal-600'
-            }`}
-          >
-            <Pill />
-            <span>Médicaments</span>
-          </button>
-          <button 
-            onClick={() => setActivePage('consultation')}
-            className={`w-full text-left p-3 rounded-lg flex items-center space-x-3 ${
-              activePage === 'consultation' ? 'bg-teal-600' : 'hover:bg-teal-600'
-            }`}
-          >
-            <CalendarCheck />
-            <span>Consultations</span>
-          </button>
-        </nav>
-      </div>
-    </div>
-  );
+      <option value="" disabled>Sélectionnez un hôpital</option>
+      {hospitals.map(hospital => (
+        <option key={hospital.id} value={hospital.id}>
+          {hospital.name} - {hospital.address}
+        </option>
+      ))}
+    </select>
+  </div>
 
-  return (
-    <div className="min-h-screen bg-cyan-50 flex flex-col md:flex-row">
-      {renderSidebar()}
-      <main 
-        className={`flex-1 p-4 md:p-8 transition-all duration-300 ${
-          sidebarOpen ? 'md:ml-64' : 'ml-0'
-        }`}
-      >
-        {activePage === 'medicament' ? renderMedicamentPage() : renderConsultationPage()}
-      </main>
-
-      {!sidebarOpen && (
-        <button 
-          onClick={() => setSidebarOpen(true)}
-          className="fixed top-4 left-4 bg-teal-500 text-white p-3 rounded-full shadow-lg hover:bg-teal-600 transition duration-300 z-50"
-        >
-          <Search />
-        </button>
-      )}
+  <div>
+    <label htmlFor="appointmentDate" className="block text-teal-700 mb-2">Date de Consultation</label>
+    <div className="relative">
+      <CalendarCheck className="absolute left-3 top-1/2 transform -translate-y-1/2 text-teal-400" />
+      <input
+        id="appointmentDate"
+        type="date"
+        value={appointmentDate}
+        onChange={(e) => setAppointmentDate(e.target.value)}
+        className="w-full pl-10 pr-4 py-3 border-2 border-teal-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-300 text-teal-800"
+      />
     </div>
-  );
+  </div>
+</div>
+
+<button
+  type="submit"
+  className="w-full bg-teal-500 text-white py-3 rounded-lg hover:bg-teal-600 transition duration-300 flex items-center justify-center space-x-2"
+>
+  <CalendarCheck size={20} />
+  <span>Réserver</span>
+</button>
+</form>
+</div>
+);
+
+return (
+<div className="flex min-h-screen">
+{/* Sidebar */}
+<div
+className={`${
+  sidebarOpen ? 'w-64' : 'w-20'
+} bg-teal-700 text-white flex flex-col transition-all duration-300`}
+>
+<button
+  className="absolute top-4 right-[-15px] bg-teal-500 text-white p-2 rounded-lg hover:bg-teal-600 z-50"
+  onClick={() => setSidebarOpen(!sidebarOpen)}
+>
+  {sidebarOpen ? '<<' : '>>'}
+</button>
+<div className="py-4 text-center font-bold text-xl">Dashboard</div>
+<nav className="flex-1 space-y-4">
+  <button
+    className={`w-full flex items-center px-4 py-3 text-lg hover:bg-teal-800 ${
+      activePage === 'medicament' && 'bg-teal-600'
+    }`}
+    onClick={() => setActivePage('medicament')}
+  >
+    <Pill className="mr-3" />
+    {sidebarOpen && <span>Médicaments</span>}
+  </button>
+  <button
+    className={`w-full flex items-center px-4 py-3 text-lg hover:bg-teal-800 ${
+      activePage === 'consultation' && 'bg-teal-600'
+    }`}
+    onClick={() => setActivePage('consultation')}
+  >
+    <Hospital className="mr-3" />
+    {sidebarOpen && <span>Consultations</span>}
+  </button>
+  <button
+    className="w-full flex items-center px-4 py-3 text-lg hover:bg-red-600"
+    onClick={() => alert('Déconnexion réussie.')}
+  >
+    <LogOut className="mr-3" />
+    {sidebarOpen && <span>Déconnexion</span>}
+  </button>
+</nav>
+</div>
+
+{/* Main Content */}
+<div className="flex-1 p-6 bg-gray-100">
+{activePage === 'medicament' && renderMedicamentPage()}
+{activePage === 'consultation' && renderConsultationPage()}
+</div>
+</div>
+);
 };
 
 export default HealthcareDashboard;
