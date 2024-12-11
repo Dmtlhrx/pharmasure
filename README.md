@@ -71,44 +71,7 @@ Ce projet facilite l'accès rapide, fiable et pratique aux produits pharmaceutiq
    
 4. Accédez à l'application à l'adresse : [http://localhost:3000](http://localhost:3000)
 
-### Exemple de composant : Formulaire d'inscription
 
-jsx
-import React, { useState } from 'react';
-import axios from 'axios';
-
-const RegisterForm = () => {
-  const [formData, setFormData] = useState({ username: '', email: '', password: '' });
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await axios.post('http://localhost:300/register', formData);
-      alert(response.data.message);
-    } catch (error) {
-      alert('Erreur lors de l\'inscription.');
-    }
-  };
-
-  return (
-    <form onSubmit={handleSubmit}>
-      <input type="text" name="username" placeholder="Nom" onChange={handleChange} required />
-      <input type="email" name="email" placeholder="Email" onChange={handleChange} required />
-      <input type="password" name="password" placeholder="Mot de passe" onChange={handleChange} required />
-      <button type="submit">S'inscrire</button>
-    </form>
-  );
-};
-
-export default RegisterForm;
-
-
----
 
 ## Backend (Node.js et SQLite)
 
@@ -134,46 +97,7 @@ export default RegisterForm;
    
 4. Vérifiez que le backend tourne à l'adresse : [http://localhost:300](http://localhost:300)
 
-### Exemple de route : Inscription
 
-javascript
-const express = require('express');
-const bcrypt = require('bcrypt');
-const db = require('./db');
-
-const app = express();
-app.use(express.json());
-
-app.post('/register', async (req, res) => {
-  const { username, email, password } = req.body;
-  const hashedPassword = await bcrypt.hash(password, 10);
-
-  const query = `INSERT INTO users (username, email, hashed_password) VALUES (?, ?, ?)`;
-  db.run(query, [username, email, hashedPassword], function (err) {
-    if (err) return res.status(500).json({ message: 'Erreur.' });
-    res.status(201).json({ message: 'Utilisateur créé avec succès.' });
-  });
-});
-
-app.listen(300, () => console.log('Backend en cours sur http://localhost:300'));
-
-
----
-
-## Charte Graphique
-
-- *Couleurs principales :*
-
-  - Vert santé : #4CAF50
-  - Jaune or : #FFD700
-  - Blanc : #FFFFFF
-
-- *Typographie :*
-
-  - Poppins (principal)
-  - Roboto (secondaire)
-
----
 
 ## Lancer le projet complet
 
@@ -189,9 +113,6 @@ app.listen(300, () => console.log('Backend en cours sur http://localhost:300'));
    
 3. Accédez à l'application sur [http://localhost:3000](http://localhost:3000).
 
----
-
-##
 
 ---
 
