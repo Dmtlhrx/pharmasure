@@ -95,7 +95,7 @@ Ce projet facilite l'accès rapide, fiable et pratique aux produits pharmaceutiq
    bash
    npm start
    
-4. Vérifiez que le backend tourne à l'adresse : [http://localhost:300](http://localhost:300)
+4. Vérifiez que le backend tourne à l'adresse : [http://localhost:3001](http://localhost:3001)
 
 
 
