@@ -9,6 +9,8 @@
 - Passer des commandes avec options de livraison ou retrait en pharmacie.
 
 Ce projet facilite l'accès rapide, fiable et pratique aux produits pharmaceutiques.
+Lien d'accès au document détaillé:
+https://docs.google.com/document/d/1zHANBIRaf4EFp6pUbO2dGgqukzsdGILKBSSDOAoo7j0/edit?usp=sharing
 
 ---
 
